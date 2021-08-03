@@ -1,0 +1,52 @@
+---
+title: "Journal"
+author: "Mafer Bravo"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    fig_height: 8
+    fig_width: 13
+    number_section: yes
+    theme: cerulean
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Librerias
+
+La base es la libreria seqtime  <https://github.com/MaferBravoGarcia/seqtime>. 
+
+[Artículo](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0496-2 "Este es el título") de Faust
+
+
+Para instalarla: 
+
+```{r message=FALSE, warning=FALSE}
+library(devtools)  
+install_github("hallucigenia-sparsa/seqtime")  
+library(seqtime) 
+```
+
+## Matriz
+
+**porcentaje edges positivos (pep)**  : En el paper reportan edges negativos 70% para sujeto A y 63% para B. Usaré 34%, el promedio. 
+
+**conectance (c)**: Usaré el 0.05, valor más cercano para food network & dentro del rango inferido para microbial net. 
+
+```{r warning=FALSE}
+#N: No. de especies 
+N = 5
+A = generateA(N,"klemm", pep = 34, c = 0.05)
+```
+
+Nota `pep = 100` independiente del pep que ponga en la matriz :( 
