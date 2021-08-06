@@ -39,14 +39,86 @@ library(seqtime)
 
 ## Matriz
 
-**porcentaje edges positivos (pep)**  : En el paper reportan edges negativos 70% para sujeto A y 63% para B. Usaré 34%, el promedio. 
+**porcentaje edges positivos (pep)**  : En el paper reportan edges negativos 70% para sujeto A y 63% para B. Usaré 10% de pep, para que no me salgan tan altos & sea error. 
 
 **conectance (c)**: Usaré el 0.05, valor más cercano para food network & dentro del rango inferido para microbial net. 
 
 ```{r warning=FALSE}
 #N: No. de especies 
-N = 5
-A = generateA(N,"klemm", pep = 34, c = 0.05)
+N = 10 
+pep = 10
+conec = 0.05
+
+A = generateA(N,"klemm", pep = pep, c = conec)
 ```
 
-Nota `pep = 100` independiente del pep que ponga en la matriz :( 
+
+## Modelos 
+
+### Modelos del [Artículo](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0496-2 "Este es el título") de Faust
+
+#### Ricker 
+
+Revisar lo de K, en el artículo dice que la capacidad de carga es una distribución uniforme de 0 a 0.5. 
+
+```{r}
+#tiempo
+tend = 15
+#noise, término de fuerza
+sigm = c(0.01,0.05,0.1)
+#capacidad de carga
+cap = 0.01
+
+for (sig in sigm) {
+  rickerplot=tsplot(ricker(N,A=A,K=rep(cap,N), tend=tend, sigma = sig), main = paste("Ricker", "%ep =", pep, "c =", conec, "σ =", sig, "K =", cap), legend = TRUE ) 
+}
+
+```
+
+
+**GUARDAR**   `setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/RICKER/")` 
+
+**RData**  `save(rickerplot, file = paste("Ricker", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec, "sigma =", sig, "K =", cap,".RData"))`
+
+**PDF**   `pdf(paste("Ricker", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec, "sigma =", sig, "K =", cap, ".pdf"))`
+
+
+#### gLV 
+
+```{r}
+
+glvplot=tsplot(glv (N, A=A, tend=15, b = runif(N, min = 0, max = 0.5)), main="gLV")
+
+```
+
+
+**GUARDAR**   `setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/")`  `save(glvplot, file = "gLV.RData")`
+
+#### SOI
+
+¿Cuántos individuos poner? 
+
+```{r}
+
+soiplot=tsplot(soi(N, A=A, I=20, tend=15), main= "SOI")
+
+```
+
+  **GUARDAR**   `setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/")`  `save(soiplot, file = "Soi.RData")`
+  
+#### HUBBELL 
+
+¿Qué poner en metacomunidad? 
+
+```{r}
+
+M = 100
+metapop <- generateAbundances(N = M, mode = 5, probabs = TRUE)
+hubplot = tsplot(simHubbell(N = N, M = M, I = 20, d = N, m=0.1,  m.vector = metapop, tskip=500, tend=1000))
+
+```
+
+  **GUARDAR**   `setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/")`  `save(hubplot, file = "Hubbell.RData")`
+  
+  
+
