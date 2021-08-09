@@ -64,6 +64,7 @@ Revisar lo de K, en el artículo dice que la capacidad de carga es una distribuc
 ```{r}
 #tiempo
 tend = 15
+
 #noise, término de fuerza
 sigm = c(0.01,0.05,0.1)
 #capacidad de carga
@@ -87,15 +88,14 @@ for (sig in sigm) {
 
 ```{r}
 
-tend = 1.5
 grmin = 0
 grmax = 0.5
 
 
-glvplot=tsplot(glv (N, A=A, tend=tend, b = runif(N, min = grmin, max = grmax)), main = paste("gLV", "%ep =", pep, "c =", conec, "tasa crecimiento", grmin, "-", grmax), legend = TRUE )
+glvplot=tsplot(glv (N, A=A, tstep = 1, tend=tend, b = runif(N, min = grmin, max = grmax)), main = paste("gLV", "%ep =", pep, "c =", conec, "tasa crecimiento", grmin, "-", grmax), legend = TRUE )
 
 ```
-NOTA: `tend = 15` grafica tiempo de 150. idk why :c 
+
 
 **GUARDAR**  `setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/gLV/")` 
 
@@ -107,15 +107,24 @@ NOTA: `tend = 15` grafica tiempo de 150. idk why :c
 #### SOI
 
 ¿Cuántos individuos poner? 
+En el artículo menciona que la tasa de extinción es de 0-1, en la función es una distribución uniforme de N. 
+No entiendo: "we set the immigration rates to the initial species proportions" 
 
 ```{r}
+ind = 200
+emin = 0
+emax = 1
 
-soiplot=tsplot(soi(N, A=A, I=20, tend=15), main= "SOI")
+soiplot=tsplot(soi(N, A=A, I=ind, tend=tend, e.vector = runif(N, min = emin, max = emax) ),main = paste("SOI", "%ep =", pep, "c =", conec, "Individuos", ind), legend = TRUE )
 
 ```
 
-  **GUARDAR**   `setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/")`  `save(soiplot, file = "Soi.RData")`
-  
+**GUARDAR**  `setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/SOI/")` 
+
+**RData**  `save(soiplot, file = paste("SOI", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec, "Individuos", ind, ".RData"))`
+
+**PDF**   `pdf(paste("SOI", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec, "Individuos", ind, ".pdf"))`
+ 
 #### HUBBELL 
 
 ¿Qué poner en metacomunidad? 

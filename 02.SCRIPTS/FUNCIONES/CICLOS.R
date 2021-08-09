@@ -31,7 +31,6 @@ for (sig in sigm) {
 
 
 ##gLV
-tend = 1.5
 grmin = 0
 grmax = 0.5
 
@@ -40,3 +39,14 @@ glvplot=tsplot(glv (N, A=A, tend=tend, b = runif(N, min = grmin, max = grmax)), 
 dev.off() 
 setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/gLV/")
 save(glvplot, file = paste("gLV", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec, "tasa crecimiento", grmin, "-", grmax,".RData"))
+
+##SOI
+ind = 200
+emin = 0
+emax = 1
+
+pdf(paste("SOI", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec, "Individuos", ind, ".pdf"))
+soiplot=tsplot(soi(N, A=A, I=ind, tend=tend, e.vector = runif(N, min = emin, max = emax) ),main = paste("SOI", "%ep =", pep, "c =", conec, "Individuos", ind), legend = TRUE )
+dev.off() 
+setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/SOI/")
+save(soiplot, file = paste("SOI", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec, "Individuos", ind, ".RData"))
