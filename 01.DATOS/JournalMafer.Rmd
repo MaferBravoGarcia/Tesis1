@@ -51,7 +51,7 @@ conec = 0.05
 
 A = generateA(N,"klemm", pep = pep, c = conec)
 ```
-
+NOTA: Los valores de la matriz cambian cada que se cierra & abre el R. 
 
 ## Modelos 
 
@@ -76,7 +76,7 @@ for (sig in sigm) {
 ```
 
 
-**GUARDAR**   `setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/RICKER/")` 
+**GUARDAR**  `setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/RICKER/")` 
 
 **RData**  `save(rickerplot, file = paste("Ricker", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec, "sigma =", sig, "K =", cap,".RData"))`
 
@@ -87,12 +87,22 @@ for (sig in sigm) {
 
 ```{r}
 
-glvplot=tsplot(glv (N, A=A, tend=15, b = runif(N, min = 0, max = 0.5)), main="gLV")
+tend = 1.5
+grmin = 0
+grmax = 0.5
+
+
+glvplot=tsplot(glv (N, A=A, tend=tend, b = runif(N, min = grmin, max = grmax)), main = paste("gLV", "%ep =", pep, "c =", conec, "tasa crecimiento", grmin, "-", grmax), legend = TRUE )
 
 ```
+NOTA: `tend = 15` grafica tiempo de 150. idk why :c 
 
+**GUARDAR**  `setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/gLV/")` 
 
-**GUARDAR**   `setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/")`  `save(glvplot, file = "gLV.RData")`
+**RData**  `save(glvplot, file = paste("gLV", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec, "tasa crecimiento", grmin, "-", grmax,".RData"))`
+
+**PDF**   `pdf(paste("gLV", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec, "tasa crecimiento", grmin, "-", grmax, ".pdf"))`
+
 
 #### SOI
 

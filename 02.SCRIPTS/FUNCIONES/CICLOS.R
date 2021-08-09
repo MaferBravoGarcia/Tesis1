@@ -14,8 +14,10 @@ pep = 10
 conec = 0.05
 A = generateA(N,"klemm", pep = pep, c = conec)
 
-##Ricker
+##MODELOS
 tend = 15
+
+##Ricker
 sigm = c(0.01,0.05,0.1)
 cap = 0.01
 
@@ -27,3 +29,14 @@ for (sig in sigm) {
   save(rickerplot, file = paste("Ricker", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec, "sigma =", sig, "K =", cap, ".RData"))
 }
 
+
+##gLV
+tend = 1.5
+grmin = 0
+grmax = 0.5
+
+pdf(paste("gLV", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec, "tasa crecimiento", grmin, "-", grmax, ".pdf"))
+glvplot=tsplot(glv (N, A=A, tend=tend, b = runif(N, min = grmin, max = grmax)), main = paste("gLV", "%ep =", pep, "c =", conec, "tasa crecimiento", grmin, "-", grmax), legend = TRUE )
+dev.off() 
+setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/gLV/")
+save(glvplot, file = paste("gLV", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec, "tasa crecimiento", grmin, "-", grmax,".RData"))
