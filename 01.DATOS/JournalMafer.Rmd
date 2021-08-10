@@ -57,6 +57,8 @@ NOTA: Los valores de la matriz cambian cada que se cierra & abre el R.
 
 ### Modelos del [Artículo](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0496-2 "Este es el título") de Faust
 
+### Parámetros de los [Modelos](https://docs.google.com/spreadsheets/d/1iTdtGMKgQdb2-ZYNtE-UrZ76wIAnthZZ/edit?usp=sharing&ouid=107679204770856466655&rtpof=true&sd=true)
+
 #### Ricker 
 
 Revisar lo de K, en el artículo dice que la capacidad de carga es una distribución uniforme de 0 a 0.5. 
@@ -128,16 +130,28 @@ soiplot=tsplot(soi(N, A=A, I=ind, tend=tend, e.vector = runif(N, min = emin, max
 #### HUBBELL 
 
 ¿Qué poner en metacomunidad? 
+- Número de individuos: 3000, 1500
 
 ```{r}
+ind = 200
+M = 10
+mig = c(0.1, 0.3, 0.5, 0.9, 0.98)
+skip = 5 
+death = c(10,100,1000)
 
-M = 100
-metapop <- generateAbundances(N = M, mode = 5, probabs = TRUE)
-hubplot = tsplot(simHubbell(N = N, M = M, I = 20, d = N, m=0.1,  m.vector = metapop, tskip=500, tend=1000))
+for (m in mig) {
+  for (muerte in death) {
+    metapop <- generateAbundances(N = M, mode = 5, probabs = TRUE)
+    hubplot = tsplot(simHubbell(N = N, M = M, I = ind, d = muerte, m=m,  m.vector = metapop, tskip=skip, tend=tend), main = paste("Hubbell", "%ep =", pep, "c =", conec, "Individuos", ind, "metacom", M,"Tasa inmigra", m, "skip", skip, "#muertes", muerte), legend = TRUE )
+     }
+}
 
 ```
 
-  **GUARDAR**   `setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/")`  `save(hubplot, file = "Hubbell.RData")`
-  
+**GUARDAR**  `setwd("~/Microtesis/Tesis1/03.OUTPUT/PLOTS/HUBBELL/")` 
+
+**RData**  `save(hubplot, file = paste("Hubbell", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec,  "Individuos", ind, "metacom", M, "Tasa inmigra", m, "skip", skip, "#muertes", muerte, ".RData"))`
+
+**PDF**   `pdf(paste("Hubbell", "N =", N, "Tiempo = ", tend, "pep =", pep, "c =", conec,  "Individuos", ind, "metacom", M, "Tasa inmigra", m, "skip", skip, "#muertes", muerte,  ".pdf"))`
   
 
